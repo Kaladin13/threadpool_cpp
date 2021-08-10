@@ -5,6 +5,7 @@
 #include <deque>
 #include <thread>
 #include <mutex>
+#include <atomic>
 #include <functional>
 
 #endif //THREADPOOL_CPP_COMMON_H
