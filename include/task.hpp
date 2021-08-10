@@ -1,0 +1,10 @@
+#ifndef THREADPOOL_CPP_TASK_HPP
+#define THREADPOOL_CPP_TASK_HPP
+
+
+class task {
+
+};
+
+
+#endif //THREADPOOL_CPP_TASK_HPP
