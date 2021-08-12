@@ -29,6 +29,10 @@ public:
     explicit thread_pool(int number_of_threads = default_thread_num); //default is 4 threads
 
     virtual ~thread_pool() = default;
+
+    void add_task(){
+
+    }
 };
 
 

@@ -6,6 +6,7 @@
 #include <thread>
 #include <mutex>
 #include <atomic>
+#include <type_traits>
 #include <functional>
 
 #endif //THREADPOOL_CPP_COMMON_H
