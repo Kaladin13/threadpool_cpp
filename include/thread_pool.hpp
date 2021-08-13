@@ -14,7 +14,7 @@ private:
     const size_t current_number_of_threads;
 
     std::vector<std::thread> threads;
-    std::deque<std::any> task_queue;   //contain functions with different signatures
+    std::deque<std::function<void(void)>> task_queue;//contain functions with different signatures wrapped to void(void)
     std::vector<size_t> empty_threads; // to contain indexes of threads that are ready to run
 
     thread_pool(const thread_pool &) = delete;
@@ -32,10 +32,9 @@ public:
 
     virtual ~thread_pool() = default;
 
-    template <typename Function, typename ... Args>
+    template<typename Function, typename ... Args>
     void add_task(Function function, Args ... args);
 
-    void run();
 };
 
 

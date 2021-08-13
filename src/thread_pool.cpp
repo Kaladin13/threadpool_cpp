@@ -15,15 +15,8 @@ thread_pool::thread_pool(int number_of_threads) : current_number_of_threads(numb
 
 }
 
-//adds new task as std::any, signature is always void(void) after
-template <typename Function, typename ... Args>
+//creates and adds a new task, signature is always void(void) after
+template<typename Function, typename ... Args>
 void thread_pool::add_task(Function function, Args ... args) {
-    task<Function,Args ...> m_task(function,args ...);
-    task_queue.template emplace_back(m_task.get_task());
-}
-
-//first use any_cast to access function at front of task queue,
-//then runs it
-void thread_pool::run() {
-    std::any_cast<std::function<void(void)>>(task_queue.front())();
+    task_queue.emplace_back(create_func(function, args ...));
 }

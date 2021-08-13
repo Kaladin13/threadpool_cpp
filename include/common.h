@@ -8,6 +8,5 @@
 #include <atomic>
 #include <type_traits>
 #include <functional>
-#include <any>
 
 #endif //THREADPOOL_CPP_COMMON_H
