@@ -6,7 +6,7 @@
 
 class thread_pool {
 private:
-    enum{
+    enum {
         default_thread_num = 4
     };
 
@@ -14,14 +14,16 @@ private:
     const size_t current_number_of_threads;
 
     std::vector<std::thread> threads;
-    std::deque<task> task_queue;
+    std::deque<std::any> task_queue;   //contain functions with different signatures
     std::vector<size_t> empty_threads; // to contain indexes of threads that are ready to run
 
     thread_pool(const thread_pool &) = delete;
-    thread_pool & operator=(thread_pool &) = delete;
+
+    thread_pool &operator=(thread_pool &) = delete;
 
     thread_pool(thread_pool &&) = delete;
-    thread_pool && operator=(thread_pool &&) = delete;
+
+    thread_pool &&operator=(thread_pool &&) = delete;
 
 
 public:
@@ -30,9 +32,10 @@ public:
 
     virtual ~thread_pool() = default;
 
-    void add_task(){
+    template <typename Function, typename ... Args>
+    void add_task(Function function, Args ... args);
 
-    }
+    void run();
 };
 
 

@@ -8,30 +8,24 @@ class task {
 
 private:
 
-    std::function<std::invoke_result_t<Function, Args ...> ()> function;
+    std::function<void(void)> function; //void(void) signature because args are already bound
 
 public:
 
-    task(std::function<std::invoke_result_t<Function, Args ...> (Args ...)> f, Args ... args){
-        function = create_func(f,args ...);//create function here and check if signature is invokable
+    task(std::function<std::invoke_result_t<Function, Args ...>(Args ...)> f, Args ... args) {
+        function = create_func(f, args ...);//create function here and check if signature is invokable
     }
 
-    auto run(){
-        return function();
+    auto get_task() {
+        return function; //return function and not function() because we don't need it to run now
     }
 
 };
 
 template<typename Func, typename ... Args,
-        std::enable_if_t<std::is_invocable_v<Func, Args ...>, bool> = true>
-constexpr decltype(auto) create_func(Func func, Args ... args) {
-    std::function<Func(Args ...)> function_to_return = std::bind(func, args ...);
-    return function_to_return;
+        typename = std::enable_if_t<std::is_invocable_v<Func, Args ...>>>
+constexpr auto create_func(Func func, Args ... args) {
+    return [=]() { return func((args)...); };
 }
-
-//template<typename Func>
-//constexpr decltype(auto) create_func(Func func){
-//    return func();
-//}
 
 #endif //THREADPOOL_CPP_TASK_HPP
