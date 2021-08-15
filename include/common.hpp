@@ -1,5 +1,5 @@
-#ifndef THREADPOOL_CPP_COMMON_H
-#define THREADPOOL_CPP_COMMON_H
+#ifndef THREADPOOL_CPP_COMMON_HЗЗ
+#define THREADPOOL_CPP_COMMON_HЗЗ
 
 #include <vector>
 #include <deque>
@@ -9,4 +9,4 @@
 #include <type_traits>
 #include <functional>
 
-#endif //THREADPOOL_CPP_COMMON_H
+#endif //THREADPOOL_CPP_COMMON_HЗЗ

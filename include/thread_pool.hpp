@@ -1,15 +1,15 @@
 #ifndef THREADPOOL_CPP_THREAD_POOL_HPP
 #define THREADPOOL_CPP_THREAD_POOL_HPP
 
-#include "common.h"
+#include "common.hpp"
 #include "task.hpp"
 #include "custom_mutex.hpp"
+#include "mutex_guard.hpp"
 
 class thread_pool {
-private:
 
     static constexpr int default_thread_num = 4;
-    const size_t MAX_NUMBER_OF_THREADS = std::thread::hardware_concurrency()-1;
+    const size_t MAX_NUMBER_OF_THREADS = std::thread::hardware_concurrency() - 1;
     const size_t current_number_of_threads;
 
     std::vector<std::thread> threads;
@@ -37,7 +37,7 @@ public:
     virtual ~thread_pool() = default;
 
     template<typename Function, typename ... Args>
-    void add_task(Function function, Args ... args);
+    void add_task(Function &&  function, Args && ... args);
 
 };
 
