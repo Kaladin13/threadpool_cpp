@@ -10,13 +10,13 @@ class custom_mutex {
 
 public:
     void lock() {
-        while (atomic_bool.exchange(true)) {
+        while (atomic_flag.exchange(true)) {
             std::this_thread::yield();
         }
     }
 
     void unlock() {
-        atomic_bool = false;
+        atomic_flag = false;
     }
 
 };

@@ -3,19 +3,20 @@
 
 #include "common.h"
 #include "task.hpp"
+#include "custom_mutex.hpp"
 
 class thread_pool {
 private:
-    enum {
-        default_thread_num = 4
-    };
 
-    const size_t MAX_NUMBER_OF_THREADS = std::thread::hardware_concurrency();
+    static constexpr int default_thread_num = 4;
+    const size_t MAX_NUMBER_OF_THREADS = std::thread::hardware_concurrency()-1;
     const size_t current_number_of_threads;
 
     std::vector<std::thread> threads;
     std::deque<std::function<void(void)>> task_queue;//contain functions with different signatures wrapped to void(void)
-    std::vector<size_t> empty_threads; // to contain indexes of threads that are ready to run
+    std::vector<size_t> empty_threads; //contain indexes of threads that are ready to run
+
+    custom_mutex main_mutex;
 
     thread_pool(const thread_pool &) = delete;
 
@@ -25,6 +26,9 @@ private:
 
     thread_pool &&operator=(thread_pool &&) = delete;
 
+    void reset_thread(int index_of_thread);
+
+    void schedule();
 
 public:
 
