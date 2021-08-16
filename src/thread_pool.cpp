@@ -1,13 +1,10 @@
 #include "../include/thread_pool.hpp"
 
 
-thread_pool::thread_pool(int number_of_threads) : current_number_of_threads(number_of_threads - 1) {
-
-    //what to do here if number_of_threads is incorrect value?
-    if (!(number_of_threads <= MAX_NUMBER_OF_THREADS || number_of_threads > 0)) {
-        //handle_error
-        //TODO
-    }
+thread_pool::thread_pool(int number_of_threads) : current_number_of_threads(
+        (number_of_threads <= MAX_NUMBER_OF_THREADS || number_of_threads > 0) ?
+        number_of_threads - 1 : MAX_NUMBER_OF_THREADS) {
+    //here handling incorrect number of threads
 
     threads.resize(current_number_of_threads);
 
@@ -18,19 +15,19 @@ thread_pool::thread_pool(int number_of_threads) : current_number_of_threads(numb
 
 //creates and adds a new task, signature is always void(void) after
 template<typename Function, typename ... Args>
-void thread_pool::add_task(Function && function, Args && ... args) {
+void thread_pool::add_task(Function &&function, Args &&... args) {
     task_queue.emplace_back(create_func(std::forward<Function>(function), std::forward<Args>(args)...));
     schedule();
 }
 
-//assign tasks to empty threads, and then wait for them to run
+//assign tasks to empty threads, if all threads are busy, then wait
 void thread_pool::schedule() {
 
     mutex_guard mutexGuard(main_mutex);
 
     while (!task_queue.empty()) {
-        if (empty_threads.empty()){
-            std::this_thread::sleep_for(std::chrono::milliseconds(500)); //TODO
+        if (empty_threads.empty()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(500)); //TODO find optimal constant
             continue;
         }
 
