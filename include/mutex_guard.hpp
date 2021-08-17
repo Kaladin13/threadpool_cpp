@@ -16,9 +16,13 @@ class mutex_guard {
     mutex_guard && operator=(mutex_guard &&) = delete;
 
 public:
-    explicit mutex_guard(Mutex & ref);
+    explicit mutex_guard(Mutex &ref) : mutex_ref(ref) {
+        mutex_ref.lock();
+    }
 
-    virtual ~mutex_guard();
+    virtual ~mutex_guard() {
+        mutex_ref.unlock();
+    }
 
 };
 
